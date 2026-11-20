@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- 1. Browser Tab Title & Favicon (PNG Icon) -->
+  <title>eKard Savings - Everything, Everyone, Everywhere, Everyday</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+
+  <!-- Google Fonts: Montserrat (Headings) & Inter (Body/UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --dark-teal: #0A4D56;
+      --mid-teal: #0F7682;
+      --sunbeam-yellow: #FFD23F;
+      --text-dark: #0D2B30;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background-color: #f4f4f4;
+      overflow-x: hidden;
+    }
+
+    /* --- 2. GLASSMORPHIC TOP NAVBAR --- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(10, 77, 86, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    .brand span {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--dark-teal);
+      letter-spacing: -0.02em;
+    }
+
+    /* Pill Buttons */
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .pill-btn-nav {
+      background-color: var(--dark-teal);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(10, 77, 86, 0.2);
+    }
+
+    .pill-btn-hero {
+      background-color: var(--sunbeam-yellow);
+      color: var(--dark-teal);
+      font-weight: 700;
+      padding: 12px 24px;
+      font-size: 0.92rem;
+      box-shadow: 0 6px 18px rgba(255, 210, 63, 0.45);
+    }
+
+    .pill-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* --- 3. HERO SECTION & RESPONSIVE BACKGROUNDS --- */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh; /* Full mobile viewport height */
+      min-height: 680px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-bg, .hero-foreground-mask {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+    }
+
+    /* Default: Phone Image */
+    .hero-bg {
+      background-image: url('phone-pic.jpg');
+      z-index: 1;
+    }
+
+    /* 4. DEPTH LAYER: Clips just the top of the iPhone so text tucks behind it */
+    .hero-foreground-mask {
+      background-image: url('phone-pic.jpg');
+      z-index: 3;
+      pointer-events: none;
+      /* Polygon traces the iPhone's top rounded bezel on phone-pic.jpg */
+      clip-path: polygon(
+        59% 31%, 
+        61% 27.5%, 
+        65% 26%, 
+        89% 25.5%, 
+        93.5% 27%, 
+        95.5% 31%, 
+        96% 45%, 
+        59% 45%
+      );
+    }
+
+    /* Desktop / Laptop Image Swap */
+    @media (min-width: 768px) {
+      .hero-bg {
+        background-image: url('webb-pic.jpg');
+        background-position: center center;
+      }
+      .hero-foreground-mask {
+        display: none; /* Disable phone-specific polygon mask on desktop */
+      }
+    }
+
+    /* --- 4 & 5. HEADLINE IN TOP WHITE SPACE --- */
+    .hero-top {
+      position: relative;
+      z-index: 2; /* Sits between background (1) and phone cutout (3) */
+      padding: 78px 22px 0 22px;
+    }
+
+    .hero-headline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.35rem, 9.5vw, 4.5rem);
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+      color: var(--dark-teal);
+    }
+
+    .highlight-e {
+      color: var(--sunbeam-yellow);
+      text-shadow: 0 2px 10px rgba(10, 77, 86, 0.15);
+    }
+
+    /* Smooth 0.5s Rotating Word Container */
+    .rotating-word-wrap {
+      display: inline-block;
+      position: relative;
+      color: var(--sunbeam-yellow);
+      text-shadow: 0 2px 12px rgba(10, 77, 86, 0.18);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .rotating-word-wrap.fade-out {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .rotating-word-wrap.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- 6. BOTTOM WHITE PEDESTAL DESCRIPTION & CTA --- */
+    .hero-bottom {
+      position: relative;
+      z-index: 4;
+      padding: 20px 22px 30px 22px;
+      /* Subtle light gradient ensures readability over the lower studio blocks */
+      background: linear-gradient(
+        to top,
+        rgba(245, 245, 245, 0.96) 55%,
+        rgba(245, 245, 245, 0) 100%
+      );
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--text-dark);
+      max-width: 340px;
+    }
+
+    /* Desktop Layout Adjustments */
+    @media (min-width: 768px) {
+      .navbar {
+        padding: 16px 48px;
+      }
+      .hero {
+        justify-content: center;
+        padding: 0 48px;
+      }
+      .hero-top {
+        padding: 0;
+        max-width: 650px;
+      }
+      .hero-bottom {
+        background: none;
+        padding: 24px 0 0 0;
+        max-width: 520px;
+      }
+      .hero-desc {
+        font-size: 1.05rem;
+        max-width: 480px;
+      }
+    }
+
+
+
+
+    /* --- SECTION 2: ABOUT, ECOSYSTEM & HOW IT WORKS --- */
+.about-section {
+  position: relative;
+  padding: 80px 22px;
+  background-color: #ffffff;
+  color: var(--text-dark);
+  border-top: 1px solid rgba(10, 77, 86, 0.08);
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header & Mission */
+.section-eyebrow {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mid-teal);
+  background: rgba(15, 118, 130, 0.08);
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.85rem, 6vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--dark-teal);
+  margin-bottom: 16px;
+}
+
+.section-lead {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3a5458;
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+
+/* Business Categories Marquee / Grid */
+.places-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--dark-teal);
+  margin-bottom: 12px;
+}
+
+.places-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.place-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  background-color: #f4f8f8;
+  color: var(--dark-teal);
+  border: 1px solid rgba(10, 77, 86, 0.12);
+}
+
+.place-chip svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--mid-teal);
+}
+
+.place-chip.coming-soon {
+  background-color: #fffbeb;
+  border-color: rgba(255, 210, 63, 0.6);
+  color: #6b5300;
+}
+
+.badge-soon {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--sunbeam-yellow);
+  color: var(--dark-teal);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+/* Audience Toggle Switcher */
+.toggle-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 28px;
+}
+
+.toggle-bar {
+  display: inline-flex;
+  background-color: #eef4f5;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(10, 77, 86, 0.1);
+}
+
+.toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #49666b;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.toggle-btn.active {
+  background-color: var(--dark-teal);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(10, 77, 86, 0.2);
+}
+
+/* Tab Content Panels */
+.tab-panel {
+  display: none;
+  animation: fadeSlideUp 0.35s ease forwards;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Step Cards Grid */
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .about-section {
+    padding: 100px 48px;
+  }
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+.step-card {
+  background: #f8fbfb;
+  border: 1px solid rgba(10, 77, 86, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.step-card:hover {
+  border-color: var(--mid-teal);
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: var(--sunbeam-yellow);
+  color: var(--dark-teal);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+
+.step-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.12rem;
+  color: var(--dark-teal);
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #3a5458;
+}
+
+/* Points Conversion & Value Callout Box */
+.conversion-banner {
+  background: linear-gradient(135deg, var(--dark-teal) 0%, #0d626d 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .conversion-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+  }
+}
+
+.conversion-info h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--sunbeam-yellow);
+  margin-bottom: 6px;
+}
+
+.conversion-info p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 480px;
+}
+
+.rate-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rate-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 210, 63, 0.35);
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.rate-pill span {
+  color: var(--sunbeam-yellow);
+}
+
+
+
+
+
+/* --- SECTION 3: GET STARTED / ONBOARDING CONTAINERS --- */
+.onboarding-section {
+  padding: 80px 22px 100px 22px;
+  background-color: #f4f8f8;
+  border-top: 1px solid rgba(10, 77, 86, 0.08);
+}
+
+.onboarding-header {
+  text-align: left;
+  margin-bottom: 36px;
+}
+
+.onboarding-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 820px) {
+  .onboarding-section {
+    padding: 100px 48px 120px 48px;
+  }
+  .onboarding-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
+
+/* Main Card Container (20% Top Image / 80% Bottom Content) */
+.onboard-card {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(10, 77, 86, 0.1);
+  box-shadow: 0 12px 32px rgba(10, 77, 86, 0.06);
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+}
+
+/* 20% Top Image Banner */
+.card-media-20 {
+  position: relative;
+  flex: 0 0 24%;
+  min-height: 175px; /* Gives more vertical space so heads aren't cramped */
+  max-height: 220px;
+  width: 100%;
+  background-color: #e9f0f0;
+  overflow: hidden;
+}
+
+.card-media-20 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Anchors to the TOP so heads/faces stay visible, while keeping subject on the right */
+  object-position: 80% 15%;
+  display: block;
+}
+
+/* Text placed in the left whitespace of your images */
+.media-left-label {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--dark-teal);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.media-left-label span {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--mid-teal);
+  margin-bottom: 2px;
+}
+
+/* 80% Bottom Body */
+.card-body-80 {
+  flex: 1;
+  padding: 26px 24px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-summary {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #3a5458;
+  margin-bottom: 18px;
+}
+
+.req-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dark-teal);
+  margin-bottom: 12px;
+}
+
+.req-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.req-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--text-dark);
+}
+
+.req-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(255, 210, 63, 0.35);
+  color: var(--dark-teal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.req-check svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--dark-teal);
+  stroke-width: 3;
+}
+
+/* Action Buttons Footer */
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.btn-primary-yellow {
+  flex: 1 1 auto;
+  background-color: var(--sunbeam-yellow);
+  color: var(--dark-teal);
+  font-weight: 700;
+  padding: 13px 20px;
+  box-shadow: 0 6px 16px rgba(255, 210, 63, 0.35);
+}
+
+.btn-secondary-outline {
+  flex: 1 1 auto;
+  background-color: transparent;
+  color: var(--dark-teal);
+  border: 1.5px solid var(--dark-teal);
+  font-weight: 600;
+  padding: 12px 20px;
+}
+
+.btn-primary-teal {
+  width: 100%;
+  background-color: var(--dark-teal);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 14px 22px;
+  box-shadow: 0 6px 18px rgba(10, 77, 86, 0.22);
+}
+
+.btn-primary-yellow:hover,
+.btn-secondary-outline:hover,
+.btn-primary-teal:hover {
+  transform: translateY(-1px);
+}
+
+
+
+
+
+/* --- SECTION 4: REACH US (CONTACT & FORMSPREE) --- */
+.contact-section {
+  padding: 80px 22px 60px 22px;
+  background-color: #ffffff;
+  border-top: 1px solid rgba(10, 77, 86, 0.08);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+@media (min-width: 820px) {
+  .contact-section {
+    padding: 100px 48px 70px 48px;
+  }
+  .contact-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 36px;
+  }
+}
+
+/* Left Panel: Dark Teal Direct Info Card */
+.contact-info-card {
+  background: linear-gradient(155deg, var(--dark-teal) 0%, #07383f 100%);
+  color: #ffffff;
+  border-radius: 24px;
+  padding: 32px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle decorative glow circle inside dark card */
+.contact-info-card::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 210, 63, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.contact-info-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.55rem;
+  line-height: 1.18;
+  margin-bottom: 10px;
+}
+
+.contact-info-card h3 span {
+  color: var(--sunbeam-yellow);
+}
+
+.contact-subtext {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.direct-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.channel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.channel-item:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 210, 63, 0.45);
+}
+
+.channel-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 210, 63, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.channel-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--sunbeam-yellow);
+}
+
+.channel-label {
+  display: block;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 2px;
+}
+
+.channel-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #ffffff;
+}
+
+/* Right Panel: Formspree Form Card */
+.contact-form-card {
+  background: #f8fbfb;
+  border: 1px solid rgba(10, 77, 86, 0.1);
+  border-radius: 24px;
+  padding: 30px 24px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--dark-teal);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 13px 15px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(10, 77, 86, 0.14);
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--mid-teal);
+  box-shadow: 0 0 0 3px rgba(15, 118, 130, 0.12);
+}
+
+textarea.form-control {
+  min-height: 115px;
+  resize: vertical;
+}
+
+.form-submit-btn {
+  width: 100%;
+  border: none;
+  background-color: var(--sunbeam-yellow);
+  color: var(--dark-teal);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 15px 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 210, 63, 0.38);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(255, 210, 63, 0.5);
+}
+
+.form-status {
+  margin-top: 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  display: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+.form-status.success {
+  display: block;
+  background: rgba(15, 118, 130, 0.12);
+  color: var(--dark-teal);
+}
+
+.form-status.error {
+  display: block;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Minimal Footer */
+.site-footer {
+  background-color: #f4f8f8;
+  border-top: 1px solid rgba(10, 77, 86, 0.08);
+  padding: 26px 22px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #49666b;
+}
+
+.site-footer strong {
+  color: var(--dark-teal);
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+/* --- IMAGE FOOTER (MIRRORED 3D VISUAL ON LEFT, CONTENT ON RIGHT) --- */
+.image-footer {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(10, 77, 86, 0.12);
+  color: var(--dark-teal);
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+}
+
+/* Background layer flipped horizontally so 3D items move to the LEFT */
+.footer-bg-flipped {
+  position: absolute;
+  inset: 0;
+  background-image: url('web.jpg');
+  background-size: cover;
+  background-position: right center; /* Anchors the 3D items cleanly after flip */
+  transform: scaleX(-1); /* Mirrors image horizontally without editing the file */
+  z-index: 1;
+}
+
+/* Subtle gradient wash so text on the right is effortless to read */
+.footer-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(224, 245, 245, 0.86) 0%,
+    rgba(205, 239, 239, 0.92) 100%
+  );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+@media (min-width: 820px) {
+  .footer-overlay {
+    /* Clear on the left to show off the 3D art; soft teal wash on the right for text */
+    background: linear-gradient(
+      to right,
+      rgba(210, 242, 242, 0.05) 0%,
+      rgba(210, 242, 242, 0.25) 42%,
+      rgba(218, 245, 245, 0.92) 60%,
+      rgba(225, 247, 247, 0.98) 100%
+    );
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.footer-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 52px 22px 32px 22px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (min-width: 820px) {
+  .footer-container {
+    padding: 64px 48px 40px 48px;
+    justify-content: flex-end; /* Pushes all footer text to the RIGHT side */
+  }
+}
+
+.footer-right-content {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.footer-brand img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.footer-brand span {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--dark-teal);
+  letter-spacing: -0.02em;
+}
+
+.footer-tagline {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--dark-teal);
+}
+
+.footer-tagline span {
+  background-color: var(--sunbeam-yellow);
+  padding: 1px 7px;
+  border-radius: 6px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.footer-links a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark-teal);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.footer-bottom-meta {
+  padding-top: 18px;
+  border-top: 1px solid rgba(10, 77, 86, 0.14);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #2c4e53;
+}
+
+.footer-bottom-meta strong {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--dark-teal);
+}
+  </style>
+</head>
+<body>
+
+  <!-- 2. NAVBAR -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <img src="icon.png" alt="eKard Savings Logo" />
+      <span>eKard <span style="color: #FFD23F;">Savings</span></span>
+    </a>
+    <a href="#section-3" class="pill-btn pill-btn-nav">Get Started</a>
+  </nav>
+
+  <!-- 3. SECTION 1: HERO -->
+  <section class="hero" id="section-1">
+    <!-- Background Image (Swaps via CSS @media) -->
+    <div class="hero-bg"></div>
+    
+    <!-- Depth Mask Layer (Places top of iPhone in front of descending headline letters) -->
+    <div class="hero-foreground-mask"></div>
+
+    <!-- 4 & 5. Top White Space Headline -->
+    <div class="hero-top">
+      <h1 class="hero-headline">
+        The <span class="highlight-e">e</span> is for<br />
+        <span id="rotating-word" class="rotating-word-wrap fade-in">everything.</span>
+      </h1>
+    </div>
+
+    <!-- 6. Bottom White Space Description + Pill Button -->
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        One universal loyalty, rewards, and savings card built for local shops and everyday shoppers. 
+        Earn points with every spend-zero fees, no barriers.
+      </p>
+      <a href="#section3" class="pill-btn pill-btn-hero">Get Started Free</a>
+    </div>
+  </section>
+
+  <!-- Placeholder anchor for Page/Section 3 -->
+  <div id="section-3"></div>
+
+  <!-- 5. Smooth 500ms Word Rotation Script -->
+  
+
+
+  <!-- SECTION 2: WHO WE ARE & HOW IT WORKS -->
+<section class="about-section" id="section-2">
+  <div class="container">
+    
+    <!-- Who We Are Intro -->
+    <span class="section-eyebrow">Who We Are &amp; How It Works</span>
+    <h2 class="section-title">Everyday spending, turned into neighborhood savings.</h2>
+    <p class="section-lead">
+      eKard Savings connects everyday shoppers with independent local businesses on one universal loyalty network. 
+      No bank accounts required, no monthly fees-just simple points every time you support local.
+    </p>
+
+    <!-- Where eKard Works -->
+    <p class="places-label">Built for the businesses you visit every day:</p>
+    <div class="places-grid">
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Spaza Shops
+      </div>
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Coffee Shops &amp; Cafés
+      </div>
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        Water Refill Businesses
+      </div>
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Mechanics &amp; Services
+      </div>
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Local Retailers
+      </div>
+      <div class="place-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>
+        Bars &amp; Lounges
+      </div>
+      <div class="place-chip coming-soon">
+        Fuel Stations <span class="badge-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- Split Audience Toggle -->
+    <div class="toggle-wrapper">
+      <div class="toggle-bar" role="tablist">
+        <button class="toggle-btn active" onclick="switchAudience('shoppers', this)">For Shoppers</button>
+        <button class="toggle-btn" onclick="switchAudience('businesses', this)">For Businesses</button>
+      </div>
+    </div>
+
+    <!-- PANEL A: SHOPPER JOURNEY -->
+    <div id="panel-shoppers" class="tab-panel active">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Grab Your Card &amp; Register in 2 Steps</h3>
+          <p>Pick up a free physical eKard at any partner shop or claim a digital card online. Link your number in two quick steps
+             and your profile is live.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Shop Anywhere in the Network</h3>
+          <p>Buy groceries at your spaza, refill water, get a haircut, or fix your car. Show your card number at the counter before you pay.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Earn Points Automatically</h3>
+          <p>The cashier logs your purchase total and card number. Your points reflect straight onto your shopper 
+            profile-every <strong>R10 spent earns 1 point</strong>.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3>Redeem at Any Partner Store</h3>
+          <p>Points aren't withdrawn as cash - they work as real store value across the network. Got <strong>20 
+            points</strong>? Walk into <em>any</em> partner shop, grab R20 worth of items, redeem your points, and walk out.</p>
+        </div>
+      </div>
+
+      <!-- R10 = 1 Point Visual Breakdown -->
+      <div class="conversion-banner">
+        <div class="conversion-info">
+          <h4>Simple Math: R10 = 1 Point (1 Pt = R1 Value)</h4>
+          <p>Your points never get eaten by bank charges. Save them up across different shops and spend them whenever you need essentials.</p>
+        </div>
+        <div class="rate-pills">
+          <div class="rate-pill">R10 = <span>1 pt</span></div>
+          <div class="rate-pill">R20 = <span>2 pts</span></div>
+          <div class="rate-pill">R100 = <span>10 pts</span></div>
+          <div class="rate-pill">R250 = <span>25 pts</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL B: BUSINESS JOURNEY -->
+    <div id="panel-businesses" class="tab-panel">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Onboard Your Business Free</h3>
+          <p>Whether you run a spaza shop, café, mechanic workshop, or bar, register your business in minutes with zero 
+            expensive POS hardware needed.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Log Sales in Seconds</h3>
+          <p>When a customer pays, your cashier simply enters the purchase amount and the shopper's eKard number. 
+            The system calculates and credits their points instantly.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Attract Cross-Shop Foot Traffic</h3>
+          <p>Shoppers who earn points at Shop A can redeem them at your shop. You become a destination for loyal neighborhood 
+            buyers looking to spend their saved points.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3>Full Rand Reimbursement</h3>
+          <p>When a shopper redeems 20 points for R20 worth of stock at your counter, you don't lose a cent-<strong>eKard reimburses 
+            your business the full R20</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Business Value Summary Banner -->
+      <div class="conversion-banner">
+        <div class="conversion-info">
+          <h4>Zero Risk to Your Cash Flow</h4>
+          <p>Reward repeat customers, compete with big retail loyalty programs, and get 100% reimbursed in 
+            Rands whenever shoppers redeem points at your store.</p>
+        </div>
+        <div class="rate-pills">
+          <div class="rate-pill">20 pts redeemed = <span>R20 paid to you</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<!-- SECTION 3: GET STARTED (SHOPPER & BUSINESS CONTAINERS) -->
+<section class="onboarding-section" id="section3">
+  <div class="container">
+    
+    <div class="onboarding-header">
+      <span class="section-eyebrow">Get Started</span>
+      <h2 class="section-title">Join eKard in under two minutes.</h2>
+    </div>
+
+    <div class="onboarding-grid">
+      
+      <!-- CONTAINER 1: SHOPPER -->
+      <div class="onboard-card">
+        <!-- Top 20%: Customer Image + Left Whitespace Label -->
+        <div class="card-media-20">
+          <div class="media-left-label">
+            <span>FOR YOU</span>
+            SHOPPER
+          </div>
+          <img src="shopper.jpeg" alt="eKard Shopper" />
+        </div>
+
+        <!-- Bottom 80%: Description, Requirements & Dual Pill Buttons -->
+        <div class="card-body-80">
+          <div>
+            <p class="card-summary">
+              Start earning points on everyday buys across local shops-zero fees, no paperwork, and no physical address needed.
+            </p>
+
+            <div class="req-title">What you need to register:</div>
+            <ul class="req-list">
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>18 years or older</strong></span>
+              </li>
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Your full name</strong> (as you want it on your profile)</span>
+              </li>
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Active mobile number</strong> (WhatsApp preferred so we can send your digital card straight to your chat)</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card-actions">
+            <a href="#register-digital" class="pill-btn btn-primary-yellow">Get Digital Card</a>
+            <a href="#register-physical" class="pill-btn btn-secondary-outline">Get Physical Card</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTAINER 2: BUSINESS -->
+      <div class="onboard-card">
+        <!-- Top 20%: Business Image + Left Whitespace Label -->
+        <div class="card-media-20">
+          <div class="media-left-label">
+            <span><span style="color: #FFD23F;">FOR MERCHANTS <br></span></span>
+            BUSINESS
+          </div>
+          <img src="business.jpg" alt="eKard Partner Business" />
+        </div>
+
+        <!-- Bottom 80%: Description, Requirements & Single Pill Button -->
+        <div class="card-body-80">
+          <div>
+            <p class="card-summary">
+              Turn walk-in buyers into regulars, accept cross-shop point redemptions, and get stocked up with physical
+               eKards to hand out at your counter.
+            </p>
+
+            <div class="req-title">What we'll ask to verify your shop:</div>
+            <ul class="req-list">
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Business name &amp; category</strong> (spaza, café, salon, mechanic, etc.)</span>
+              </li>
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Owner/Manager full name &amp; WhatsApp contact</strong></span>
+              </li>
+              <li>
+                <span class="req-check">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span><strong>Physical shop address</strong> (so we can verify your location and deliver physical eKards for your customers)</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card-actions">
+            <a href="#register-business" class="pill-btn btn-primary-teal">Register Your Business</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- SECTION 4: REACH US -->
+<section class="contact-section" id="section-4">
+  <div class="container">
+    
+    <div class="onboarding-header">
+      <span class="section-eyebrow">Reach Us</span>
+      <h2 class="section-title">Got a question or want eKard at your shop?</h2>
+    </div>
+
+    <div class="contact-grid">
+      
+      <!-- Left: Direct Contact Details -->
+      <div class="contact-info-card">
+        <div>
+          <h3>Let’s build <span>local</span> together.</h3>
+          <p class="contact-subtext">
+            Whether you're a shopper needing help with your points or a business owner ready to stock physical eKards, reach out directly.
+          </p>
+        </div>
+
+        <div class="direct-channels">
+          <!-- WhatsApp Direct Link -->
+          <a href="https://wa.me/27000000000" target="_blank" rel="noopener" class="channel-item">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </div>
+            <div>
+              <span class="channel-label">WhatsApp Support</span>
+              <span class="channel-value">+27 (0) 78 982 6060</span>
+            </div>
+          </a>
+
+          <!-- Email -->
+          <a href="mailto:hello@ekardsavings.co.za" class="channel-item">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <span class="channel-label">Email Us</span>
+              <span class="channel-value">green.orbit@safrica.com</span>
+            </div>
+          </a>
+
+          <!-- Location -->
+          <div class="channel-item">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <span class="channel-label">Based In</span>
+              <span class="channel-value">Nelson Mandela Bay, South Africa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Formspree Contact Form -->
+      <div class="contact-form-card">
+        <form id="ekard-contact-form" action="YOUR_FORMSPREE_ENDPOINT" method="POST">
+          
+          <div class="form-group">
+            <label class="form-label" for="sender-role">I am reaching out as a...</label>
+            <select class="form-control" id="sender-role" name="role" required>
+              <option value="Shopper">Shopper</option>
+              <option value="Business Owner">Business Owner / Merchant</option>
+              <option value="Partner / General">Partner / General Inquiry</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sender-name">Full Name</label>
+            <input class="form-control" type="text" id="sender-name" name="name" placeholder="e.g. Sipho Mokoena" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sender-contact">WhatsApp Number or Email</label>
+            <input class="form-control" type="text" id="sender-contact" name="contact" placeholder="e.g. 071 234 5678 or name@email.com" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sender-message">Message</label>
+            <textarea class="form-control" id="sender-message" name="message" placeholder="Tell us how we can help..." required></textarea>
+          </div>
+
+          <button type="submit" class="form-submit-btn" id="form-submit-btn">Send Message</button>
+          <div id="form-status" class="form-status"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- IMAGE FOOTER -->
+<footer class="image-footer">
+  <!-- Mirrored background image (3D elements sit on the left) -->
+  <div class="footer-bg-flipped"></div>
+  <div class="footer-overlay"></div>
+
+  <div class="footer-container">
+    <div class="footer-right-content">
+      
+      <!-- Brand Logo & Name -->
+      <a href="#section-1" class="footer-brand">
+        <img src="icon.png" alt="eKard Savings Logo" />
+        <span>eKard Savings</span>
+      </a>
+
+      <!-- Punchy Closing Tagline -->
+      <p class="footer-tagline">
+        The <span>e</span> is for everything, everyone, everywhere, everyday.
+      </p>
+
+      <!-- Quick Jump Links -->
+      <nav class="footer-links" aria-label="Footer Navigation">
+        <a href="#section-1">Home</a>
+        <a href="#section-2">How It Works</a>
+        <a href="#section3">Get Started</a>
+        <a href="#section-4">Reach Us</a>
+      </nav>
+
+      <!-- Legal & Entity Attribution -->
+      <div class="footer-bottom-meta">
+        <p>&copy; 2026 <strong>GREEN ORBIT (Pty) Ltd t/a eKard Savings</strong>. All rights reserved.</p>
+        <p>Powered by Beyondscore &bull; Nelson Mandela Bay, South Africa</p>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<script>
+
+
+    const words = ["everything.", "everyone.", "everywhere.", "everyday."];
+    const wordEl = document.getElementById("rotating-word");
+    let index = 0;
+
+    setInterval(() => {
+      // Trigger smooth fade/slide out
+      wordEl.classList.remove("fade-in");
+      wordEl.classList.add("fade-out");
+
+      setTimeout(() => {
+        index = (index + 1) % words.length;
+        wordEl.textContent = words[index];
+        
+        // Trigger smooth fade/slide in
+        wordEl.classList.remove("fade-out");
+        wordEl.classList.add("fade-in");
+      }, 200); // 200ms fade transition inside the 500ms interval
+    }, 1500);
+
+
+
+
+  function switchAudience(role, btn) {
+    // Update active button state
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Switch visible panel
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById('panel-' + role).classList.add('active');
+  }
+
+
+
+
+  const contactForm = document.getElementById("ekard-contact-form");
+  const formStatus = document.getElementById("form-status");
+  const submitBtn = document.getElementById("form-submit-btn");
+
+  contactForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    formStatus.className = "form-status";
+    formStatus.style.display = "none";
+
+    const data = new FormData(contactForm);
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: contactForm.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        formStatus.textContent = "Message sent! We'll get back to you shortly.";
+        formStatus.classList.add("success");
+        contactForm.reset();
+      } else {
+        formStatus.textContent = "Something went wrong. Please try again or message us on WhatsApp.";
+        formStatus.classList.add("error");
+      }
+    } catch (error) {
+      formStatus.textContent = "Network error. Please check your connection and try again.";
+      formStatus.classList.add("error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send Message";
+    }
+  });
+</script>
+
+</body>
+</html>
